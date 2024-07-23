@@ -1,0 +1,68 @@
+# Codsoft
+Task: Iris flower classification 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import warnings
+warnings.filterwarnings('ignore')
+data= pd.read_csv(r"C:\Users\anshika\OneDrive\Desktop\IRIS.csv")
+data.head()
+# EDA AND CLEANING 
+data.shape
+data.describe()
+data.info()
+data.isnull().sum()
+data["species"].value_counts()
+# DATA VISUALIZATION 
+sns.countplot(x='species',edgecolor ='black',data=data)
+plt.title('SPECIES COUNT')
+plt.show()
+sns.pairplot(data, hue='species',height=3)
+plt.show()
+categories={'Iris-setosa':0,'Iris-versicolor':1,'Iris-virginica':2}
+data['species']=data['species'].map(categories)
+data["species"].value_counts()
+Data Modelling
+X=data.drop(['species'],axis=1)
+y=data['species']
+X.head()
+y.head()
+from sklearn.preprocessing import LabelEncoder 
+
+from sklearn.model_selection import train_test_split
+X_train, X_test,y_train,y_test= train_test_split(X,y,test_size=0.30)
+print(X_train.shape)
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier,RandomForestRegressor
+from sklearn. metrics import
+accuracy_score
+from sklearn.neighbors import
+KNeighborsClassifier
+from sklearn.metrics import classification_report ,confusion_matrix
+LR=LogisticRegression()
+LR.fit(X_train,y_train)
+y_pred_log=LR.predict(X_test)
+y_test[0:5]
+y_pred_log[0:5]
+print(classification_report(y_test,y_pred_log))
+print(confusion_matrix(y_test,y_pred_log))
+model=KNeighborsClassifier()
+model.fit(X_train,y_train)
+xpre2=model.predict(X_train)
+print(accuracy_score(xpre2,y_train))
+RF=RandomForestClassifier()
+cv=cross_val_score(RF,X_train,y_train,cv=10)
+print(cv)
+print(cv.mean())
+RF=RandomForestRegressor()
+RF.fit(X_train,y_train)
+RF_pred=RF.predict(X_test)
+print(y_test[0:5],RF_pred[ 0:5 ])
+print(classification_report(y_test,RF_pred>0.5))
+print(confusion_matrix(y_test,RF_pred>0.5))
