@@ -1,0 +1,72 @@
+# Codsoft 
+Task: Credit card fraud detection 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+data= pd.read_csv(r"C:\Users\anshika\OneDrive\Desktop\creditcard.csv")
+data.head()
+# EDA AND CLEANING 
+data.columns
+data.shape
+data.info()
+data.describe()
+data.isnull().sum()
+data.duplicated().sum()
+duplicates=data[data.duplicated()==True]
+duplicates.head(10)
+data['Class'].value_counts()
+data[data.Class==1]
+sns.countplot(x='Class',data=data)
+fraud=data[data.Class==1
+nofraud=data[data.Class==0
+print(fraud.shape)
+print(nofraud.shape)
+fraud.Amount.describe()
+nofraud.Amount.describe()
+fraudsample=data.sample(n=492)
+newdata=pd.concat([fraudsample ,fraud],axis=0)
+newdata
+newdata['Class'].value_counts()
+# DATA MODELLING 
+X=newdata.drop(columns='Class',axis=1)
+y=newdata['Class']
+X.head()
+y.head()
+from sklearn.preprocessing import StandardScaler
+mns= StandardScaler()
+X=pd.DataFrame(mns.fit_transform(X))
+from sklearn.preprocessing import LabelEncoder 
+from sklearn.model_selection import train_test_split
+X_train, X_test,y_train,y_test= train_test_split(X,y,test_size=0.20, random_state =40)
+print("Shape of X_train: ", X_train.shape)
+print("Shape of X_test: ", X_test.shape)
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+LR=LogisticRegression()
+LR.fit(X_train,y_train)
+y_pred_log=LR.predict(X_test)
+y_test
+y_pred_log
+y_pred_log[0:5
+RF=RandomForestClassifier()
+RF.fit(X_train,y_train)
+RF_pred=RF.predict(X_test)
+y_test
+RF_pred
+RF_pred[0:5
+from sklearn.metrics import classification_report ,confusion_matrix
+print(classification_report(y_test,y_pred_log))
+print(confusion_matrix(y_test,y_pred_log))
+print(classification_report(y_test,RF_pred))
+print(confusion_matrix(y_test,RF_pred))
+# TEST MODEL 
+import joblib
+joblib.dump(RF,"credit_card_model")
+model=joblib.load("credit_card_model")
+pred =model.predict([[1,1,1,1,0,1,1,1,0,1,0,1,0,0,1,1,1,0,1,1,1,0,1,1,1,1,0,1,0,1]])
+if pred==0:
+    print("Normal transaction")
+else:
+    print("Fraud transaction")
+Fraud transaction
